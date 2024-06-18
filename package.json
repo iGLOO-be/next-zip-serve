@@ -21,13 +21,14 @@
   "scripts": {
     "dev": "next dev",
     "clean": "rm -rf lib/* .next/*",
-    "build": "yarn run clean && npm run build:cjs && npm run build:esm && npm run build:next",
+    "build": "npm run clean && npm run build:cjs && npm run build:esm && npm run build:next",
     "build:esm": "rollup --config ./configs/rollup.config.js",
     "build:cjs": "tsc -p ./configs/tsconfig.cjs.json",
     "build:types": "tsc -p ./configs/tsconfig.types.json",
     "build:next": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "etag": "^1.8.1",

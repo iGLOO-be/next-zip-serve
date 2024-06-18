@@ -1,3 +1,4 @@
+import { join } from "path";
 import { serveList } from "../../../lib/serve";
 
 export async function GET(
@@ -6,5 +7,6 @@ export async function GET(
 ) {
   return serveList(zip, {
     secret: process.env.JWT_SECRET,
+    cacheDir: process.env.CACHE_DIR || join(process.cwd(), ".cache"),
   });
 }

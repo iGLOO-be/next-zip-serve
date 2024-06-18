@@ -1,13 +1,11 @@
 import yauzl from "yauzl";
 import mime from "mime-types";
 import etag from "etag";
-import { download } from "./download";
 
 const cacheControl = "public, max-age=31536000"; // 1 year
 
-export async function serveZipList(zip: string) {
-  const file = await download(zip);
-  const entries = await listZip(file);
+export async function serveZipList(zipBuffer: Buffer) {
+  const entries = await listZip(zipBuffer);
   return new Response(JSON.stringify(entries), {
     headers: {
       "Content-Type": "application/json",
@@ -18,9 +16,8 @@ export async function serveZipList(zip: string) {
   });
 }
 
-export async function serveZipEntry(zip: string, entry: string) {
-  const file = await download(zip);
-  const zipEntry = await searchEntry(file, entry);
+export async function serveZipEntry(zipBuffer: Buffer, entry: string) {
+  const zipEntry = await searchEntry(zipBuffer, entry);
 
   if (!zipEntry) {
     return new Response("Not found", {

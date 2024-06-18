@@ -1,7 +1,9 @@
 {
   "extends": "./configs/tsconfig.base.json",
   "compilerOptions": {
-    "noEmit": true,
-    "outDir": "../lib"
-  }
+    "noEmit": true
+  },
+  "include": [
+    ".next/types/**/*.ts"
+  ]
 }

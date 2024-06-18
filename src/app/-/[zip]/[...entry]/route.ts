@@ -1,4 +1,4 @@
-import { serveEntry } from "@/lib/serve";
+import { serveEntry } from "../../../../lib/serve";
 
 export async function GET(
   request: Request,

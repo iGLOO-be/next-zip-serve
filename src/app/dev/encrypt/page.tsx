@@ -1,4 +1,4 @@
-import { encryptString } from "@/lib/jwt";
+import { encryptString } from "../../../lib/jwt";
 import ClientPage from "./clientPage";
 
 export default function Page() {

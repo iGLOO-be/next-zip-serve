@@ -1,1 +1,1 @@
-## zip-proxy
+## next-zip-serve

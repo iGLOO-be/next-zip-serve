@@ -1,10 +1,10 @@
-import { verifyString } from "@/lib/jwt";
-import { catchRouteError } from "@/lib/route";
-import { serveZipList } from "@/lib/serveZipEntry";
+import { serveList } from "@/lib/serve";
 
 export async function GET(
   request: Request,
   { params: { zip } }: { params: { zip: string } }
 ) {
-  return catchRouteError(async () => serveZipList(await verifyString(zip)));
+  return serveList(zip, {
+    secret: process.env.JWT_SECRET,
+  });
 }

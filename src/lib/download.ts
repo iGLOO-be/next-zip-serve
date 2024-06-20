@@ -1,9 +1,6 @@
 import fs from "fs/promises";
 import sanitize from "sanitize-filename";
-import path from "path";
 import pMemoize from "p-memoize";
-
-const cacheDir = process.env.CACHE_DIR || path.join(process.cwd(), ".cache");
 
 export const download = pMemoize(
   async (
@@ -14,9 +11,16 @@ export const download = pMemoize(
       cacheDir?: string;
     } = {}
   ) => {
-    const cachePath = `${cacheDir}/${sanitize(zip)}`;
+    console.log("Downloading zip file", zip);
 
-    if (cacheDir) {
+    const cachePath = cacheDir && `${cacheDir}/${sanitize(zip)}`;
+    if (cachePath) {
+      console.log("Using cache path", cachePath);
+    } else {
+      console.warn("Cache is disabled!");
+    }
+
+    if (cachePath && cacheDir) {
       await fs.mkdir(cacheDir, { recursive: true });
       try {
         const file = await fs.readFile(cachePath);
@@ -25,7 +29,6 @@ export const download = pMemoize(
       } catch (e) {}
     }
 
-    console.log("Downloading zip file", zip);
     const res = await fetch(zip);
     if (!res.ok) {
       const error = new Error("fetch failed");
@@ -35,7 +38,7 @@ export const download = pMemoize(
     const blob = await res.blob();
     const buffer = Buffer.from(await new Response(blob).arrayBuffer());
 
-    if (!cacheDir) {
+    if (cachePath) {
       await fs.writeFile(cachePath, buffer);
     }
 
